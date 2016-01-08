@@ -37,7 +37,12 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../control.cpp \
+../control_demo.cpp \
 ../fwrcmix.cpp \
+../hal.cpp \
+../led.cpp \
+../rcin.cpp \
 ../rcout.cpp
 
 
@@ -48,19 +53,39 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+control.o \
+control_demo.o \
 fwrcmix.o \
+hal.o \
+led.o \
+rcin.o \
 rcout.o
 
 OBJS_AS_ARGS +=  \
+control.o \
+control_demo.o \
 fwrcmix.o \
+hal.o \
+led.o \
+rcin.o \
 rcout.o
 
 C_DEPS +=  \
+control.d \
+control_demo.d \
 fwrcmix.d \
+hal.d \
+led.d \
+rcin.d \
 rcout.d
 
 C_DEPS_AS_ARGS +=  \
+control.d \
+control_demo.d \
 fwrcmix.d \
+hal.d \
+led.d \
+rcin.d \
 rcout.d
 
 OUTPUT_FILE_PATH +=fwrcmix.elf
@@ -82,10 +107,20 @@ LINKER_SCRIPT_DEP+=
 
 
 
+
+
+
+
+
+
+
+
+
+
 ./%.o: .././%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -Wundef -Werror -pedantic -pedantic-errors -mmcu=atmega32u4 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000UL  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -Wundef -Werror -pedantic -pedantic-errors -mmcu=atmega32u4 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 

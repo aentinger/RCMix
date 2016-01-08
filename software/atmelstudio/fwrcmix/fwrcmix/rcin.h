@@ -1,19 +1,20 @@
 /**
- * \file rcout.h
+ * \file rcin.h
  * \author Alexander Entinger, MSc
  * \copyright LXRobotics GmbH
- * \brief control up to 6 PWM outputs for generating rc pwm signals (20 ms period, pulse duration between 1 and 2 ms)
+ * \brief Interpret and decode up to 4 PWM input signals
  * \license 
  */
 
-#ifndef RCOUT_H_
-#define RCOUT_H_
+#ifndef RCIN_H_
+#define RCIN_H_
 
 /************************************************************************/
 /* INCLUDES                                                             */
 /************************************************************************/
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /************************************************************************/
 /* PUBLIC TYPES                                                         */
@@ -21,45 +22,40 @@
 
 typedef enum
 {
-	OUT1 = 0, OUT2 = 1, OUT3 = 2, OUT4 = 3, OUT5 = 4, OUT6 = 5
-} E_RC_OUT_SELECT;
-	
-typedef enum
-{
-	OUTx_ON, OUTx_OFF
-} E_RC_OUT_STATE;
+	IN1 = 0, IN2 = 1, IN3 = 2, IN4 = 3
+} E_RC_IN_SELECT;
 
 /************************************************************************/
 /* PUBLIC PROTOTYPES                                                    */
 /************************************************************************/
 
-class RcOut
+class RcIn
 {
 
 public:
 
 	/** 
-	 * \brief initialize the RcOut class (setup the timers, etc.)
+	 * \brief initialize thc RcIn module
 	 */
 	static void begin();
 	
 	/** 
-	 * \brief turn an output either on or off - off outputs have constant LOW level (0 V)
+	 * \brief returns true if the selected input channel has received valid signals
 	 */
-	static void setRcOutState(E_RC_OUT_SELECT const sel, E_RC_OUT_STATE const state);
+	static bool isGood(E_RC_IN_SELECT const sel);
 	
 	/** 
-	 * \brief set the pulse duration of a desired rc mixer output
+	 * \brief returns the duration of the pulses on the selected input channel
 	 */
-	static void setPwmPulseDurationUs(E_RC_OUT_SELECT const sel, uint16_t const pulse_duration_us);
-	
+	static uint16_t getPulseDurationUs(E_RC_IN_SELECT const sel);
+
 private:
 
 	/** 
 	 * \brief no public constructing
-	 */
-	RcOut() { }
-
+	 */	
+	RcIn() { }
 };
 
-#endif /* RCOUT_H_ */
+
+#endif /* RCIN_H_ */

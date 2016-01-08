@@ -23,11 +23,11 @@
 /* PRIVATE TYPEDEFS													    */
 /************************************************************************/
 
-/* Define a function pointer which is called to initialize a output */
+/* Defines a function pointer which is called to initialize a output */
 
 typedef void(*initRcOutFunc)(void);
 
-/* Define two function pointers which can be used so set (to HIGH) or
+/* Defines two function pointers which can be used so set (to HIGH) or
  * clear (to LOW) an RcOut pwm output
  */
 
@@ -40,12 +40,20 @@ typedef void(*clearRcOutFunc)(void);
 
 typedef struct  
 {
-	RcOut::E_RC_OUT_STATE state;	/* The current state of the rc output, whether it is turned on or off */
+	/* Input fields to configure the state by the users of this module
+	 * via the provided interface functions 
+	 */
+	
+	E_RC_OUT_STATE state;			/* The current state of the rc output, whether it is turned on or off */
 	uint16_t pulse_duration_us;		/* The pulse duration of the rc output pulse (duration of the output pin being 'high') */
+	
+	/* I/O functions for accessing the concrete GPIO output pin */
+	
 	initRcOutFunc initRcOut;		/* This function pointer points to a function which initializes the gpio output functionality of a rc output */
 	setRcOutFunc setRcOut;			/* This function pointer points to the function which sets the rc output to 'high' */
 	clearRcOutFunc clearRcOut;		/* This function pointer points to the function which clear the rc output to 'low' */
-} E_RC_OUT_DATA;
+
+} T_RC_OUT_DATA;
 
 /************************************************************************/
 /* PRIVATE CONTANTS													    */
@@ -65,14 +73,14 @@ static uint16_t const TIMER_RELOAD_VALUE = 0x63BF;
 /* PRIVATE DATA														    */
 /************************************************************************/
 
-static volatile E_RC_OUT_DATA RcOutData[NUM_RC_OUT_CHANNELS] =
+static volatile T_RC_OUT_DATA RcOutData[NUM_RC_OUT_CHANNELS] =
 {
-	{ RcOut::OUTx_OFF, 1500, initOut1, setOut1, clearOut1 },	/* OUT1 */
-	{ RcOut::OUTx_OFF, 1500, initOut2, setOut2, clearOut2 },	/* OUT2 */
-	{ RcOut::OUTx_OFF, 1500, initOut3, setOut3, clearOut3 },	/* OUT3 */
-	{ RcOut::OUTx_OFF, 1500, initOut4, setOut4, clearOut4 },	/* OUT4 */
-	{ RcOut::OUTx_OFF, 1500, initOut5, setOut5, clearOut5 },	/* OUT5 */
-	{ RcOut::OUTx_OFF, 1500, initOut6, setOut6, clearOut6 }		/* OUT6 */
+	{ OUTx_OFF, 1500, initOut1, setOut1, clearOut1 },	/* OUT1 */
+	{ OUTx_OFF, 1500, initOut2, setOut2, clearOut2 },	/* OUT2 */
+	{ OUTx_OFF, 1500, initOut3, setOut3, clearOut3 },	/* OUT3 */
+	{ OUTx_OFF, 1500, initOut4, setOut4, clearOut4 },	/* OUT4 */
+	{ OUTx_OFF, 1500, initOut5, setOut5, clearOut5 },	/* OUT5 */
+	{ OUTx_OFF, 1500, initOut6, setOut6, clearOut6 }	/* OUT6 */
 };
 
 static volatile bool OutputCompareMatchAclearOut1 = true;
@@ -86,9 +94,9 @@ static volatile bool OutputCompareMatchCclearOut3 = true;
 /** 
  * \brief set an rc output if the state is on, clear it otherwise
  */
-void setRcOutIfStateIsOn(RcOut::E_RC_OUT_SELECT const sel)
+void setRcOutIfStateIsOn(E_RC_OUT_SELECT const sel)
 {
-	if(RcOutData[sel].state == RcOut::OUTx_ON)
+	if(RcOutData[sel].state == OUTx_ON)
 	{
 		RcOutData[sel].setRcOut();
 	}
@@ -101,7 +109,7 @@ void setRcOutIfStateIsOn(RcOut::E_RC_OUT_SELECT const sel)
 /** 
  * \brief clear an rc output
  */
-void clearRcOut(RcOut::E_RC_OUT_SELECT const sel)
+void clearRcOut(E_RC_OUT_SELECT const sel)
 {
 	RcOutData[sel].clearRcOut();
 }
@@ -167,6 +175,10 @@ void RcOut::setPwmPulseDurationUs(E_RC_OUT_SELECT const sel, uint16_t const puls
 	RcOutData[sel].pulse_duration_us = pulse_duration_us;
 }
 
+/************************************************************************/
+/* INTERRUPT SERVICE HANDLERS                                           */
+/************************************************************************/
+
 /** 
  * \brief Interrupt Service Routine for Timer 1 - this function is 
  * executed every 20 ms
@@ -197,15 +209,15 @@ ISR(TIMER1_OVF_vect)
 	
 	/* Set OUT1 to OUT3 */
 	
-	setRcOutIfStateIsOn(RcOut::OUT1);
-	setRcOutIfStateIsOn(RcOut::OUT2);
-	setRcOutIfStateIsOn(RcOut::OUT3);
+	setRcOutIfStateIsOn(OUT1);
+	setRcOutIfStateIsOn(OUT2);
+	setRcOutIfStateIsOn(OUT3);
 	
 	/* Clear OUT4 to OUT6 */
 	
-	clearRcOut(RcOut::OUT4);
-	clearRcOut(RcOut::OUT5);
-	clearRcOut(RcOut::OUT6);
+	clearRcOut(OUT4);
+	clearRcOut(OUT5);
+	clearRcOut(OUT6);
 	
 	/* Setup output compare registers to be triggered when outputs
 	 * OUT1 to OUT3 need to be turned off. Attention: We need to
@@ -214,9 +226,9 @@ ISR(TIMER1_OVF_vect)
 	 * long.
 	 */
 	
-	OCR1A = TIMER_RELOAD_VALUE + RcOutData[RcOut::OUT1].pulse_duration_us * 2;	
-	OCR1B = TIMER_RELOAD_VALUE + RcOutData[RcOut::OUT2].pulse_duration_us * 2;	
-	OCR1C = TIMER_RELOAD_VALUE + RcOutData[RcOut::OUT3].pulse_duration_us * 2;	
+	OCR1A = TIMER_RELOAD_VALUE + RcOutData[OUT1].pulse_duration_us * 2;	
+	OCR1B = TIMER_RELOAD_VALUE + RcOutData[OUT2].pulse_duration_us * 2;	
+	OCR1C = TIMER_RELOAD_VALUE + RcOutData[OUT3].pulse_duration_us * 2;	
 	
 	/* Setup the status flags so we know that we need to clear
 	 * OUT1 to OUT3 in the output compare match interrupts
@@ -236,7 +248,7 @@ ISR(TIMER1_COMPA_vect)
 	{
 		/* Clear OUT1 */
 		
-		clearRcOut(RcOut::OUT1);
+		clearRcOut(OUT1);
 		
 		OutputCompareMatchAclearOut1 = false;
 		
@@ -246,13 +258,13 @@ ISR(TIMER1_COMPA_vect)
 		 * account for a timer step duration of 0.5 us.
 		 */
 	
-		OCR1A = 0xFFFF - RcOutData[RcOut::OUT4].pulse_duration_us * 2;
+		OCR1A = 0xFFFF - RcOutData[OUT4].pulse_duration_us * 2;
 	}
 	else
 	{
 		/* Set OUT4 */
 	
-		setRcOutIfStateIsOn(RcOut::OUT4);
+		setRcOutIfStateIsOn(OUT4);
 	}
 }
 
@@ -271,19 +283,19 @@ ISR(TIMER1_COMPB_vect)
 	{
 		/* Clear OUT2 */
 	
-		clearRcOut(RcOut::OUT2);
+		clearRcOut(OUT2);
 		
 		OutputCompareMatchBclearOut2 = false;
 	
 		/* Setup output compare register */
 		
-		OCR1B = 0xFFFF - RcOutData[RcOut::OUT5].pulse_duration_us * 2;		
+		OCR1B = 0xFFFF - RcOutData[OUT5].pulse_duration_us * 2;		
 	}
 	else
 	{
 		/* Set OUT5 */
 	
-		setRcOutIfStateIsOn(RcOut::OUT5);
+		setRcOutIfStateIsOn(OUT5);
 	}
 }
 
@@ -296,18 +308,18 @@ ISR(TIMER1_COMPC_vect)
 	{
 		/* Clear OUT3 */
 	
-		clearRcOut(RcOut::OUT3);
+		clearRcOut(OUT3);
 	
 		OutputCompareMatchCclearOut3 = false;	
 	
 		/* Setup output compare register */
 		
-		OCR1C = 0xFFFF - RcOutData[RcOut::OUT6].pulse_duration_us * 2;
+		OCR1C = 0xFFFF - RcOutData[OUT6].pulse_duration_us * 2;
 	}
 	else
 	{
 		/* Set OUT6 */
 		
-		setRcOutIfStateIsOn(RcOut::OUT6);
+		setRcOutIfStateIsOn(OUT6);
 	}	
 }

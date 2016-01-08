@@ -55,32 +55,94 @@
 #define OUT6_PORT		(PORTC)
 #define OUT6_bm			(1<<7)
 
+/* ULED = PB7 */
+
+#define ULED_DDR		(DDRB)
+#define ULED_PORT		(PORTB)
+#define ULED_bm			(1<<7)
+
+/* IN1 = PD3 = INT3 */
+
+#define IN1_DDR				(DDRD)
+#define IN1_PORT			(PORTD)
+#define IN1_bm				(1<<3)
+#define EINT_IN1_rising_bm	((1<<ISC31) | (1<<ISC30))
+#define EINT_IN1_falling_bm	(1<<ISC31)
+#define EINT_IN1_clear_bm	(~EINT_IN1_rising_bm)
+
+/* IN2 = PD2 = INT2 */
+
+#define IN2_DDR				(DDRD)
+#define IN2_PORT			(PORTD)
+#define IN2_bm				(1<<2)
+#define EINT_IN2_rising_bm	((1<<ISC21) | (1<<ISC20))
+#define EINT_IN2_falling_bm	(1<<ISC21)
+#define EINT_IN2_clear_bm	(~EINT_IN2_rising_bm)
+
+/* IN3 = PD1 = INT1 */
+
+#define IN3_DDR				(DDRD)
+#define IN3_PORT			(PORTD)
+#define IN3_bm				(1<<1)
+#define EINT_IN3_rising_bm	((1<<ISC11) | (1<<ISC10))
+#define EINT_IN3_falling_bm	(1<<ISC11)
+#define EINT_IN3_clear_bm	(~EINT_IN3_rising_bm)
+
+/* IN4 = PD0 = INT0 */
+
+#define IN4_DDR				(DDRD)
+#define IN4_PORT			(PORTD)
+#define IN4_bm				(1<<0)
+#define EINT_IN4_rising_bm	((1<<ISC01) | (1<<ISC00))
+#define EINT_IN4_falling_bm	(1<<ISC01)
+#define EINT_IN4_clear_bm	(~EINT_IN4_rising_bm)
+
 /************************************************************************/
-/* PUBLIC FUNCTIONS                                                     */
+/* PUBLIC PROTOTYPES                                                    */
 /************************************************************************/
 
-static void initOut1() { OUT1_DDR |= OUT1_bm; }
-static void setOut1() { OUT1_PORT |= OUT1_bm; }
-static void clearOut1() { OUT1_PORT &= ~OUT1_bm; }
+void initOut1();
+void setOut1();
+void clearOut1();
 	
-static void initOut2() { OUT2_DDR |= OUT2_bm; }
-static void setOut2() { OUT2_PORT |= OUT2_bm; }
-static void clearOut2() { OUT2_PORT &= ~OUT2_bm; }
+void initOut2();
+void setOut2();
+void clearOut2();
 
-static void initOut3() { OUT3_DDR |= OUT3_bm; }
-static void setOut3() { OUT3_PORT |= OUT3_bm; }
-static void clearOut3() { OUT3_PORT &= ~OUT3_bm; }
+void initOut3();
+void setOut3();
+void clearOut3();
 	
-static void initOut4() { OUT4_DDR |= OUT4_bm; }
-static void setOut4() { OUT4_PORT |= OUT4_bm; }
-static void clearOut4() { OUT4_PORT &= ~OUT4_bm; }
+void initOut4();
+void setOut4();
+void clearOut4();
 	
-static void initOut5() { OUT5_DDR |= OUT5_bm; }
-static void setOut5() { OUT5_PORT |= OUT5_bm; }
-static void clearOut5() { OUT5_PORT &= ~OUT5_bm; }
+void initOut5();
+void setOut5();
+void clearOut5();
 	
-static void initOut6() { OUT6_DDR |= OUT6_bm; }
-static void setOut6() { OUT6_PORT |= OUT6_bm; }
-static void clearOut6() { OUT6_PORT &= ~OUT6_bm; }
+void initOut6();
+void setOut6();
+void clearOut6();
+
+void initULed();
+void setULed();
+void clearULed();
+	
+void initIn1();
+void triggerIn1AtRisingEdge();
+void triggerIn1AtFallingEdge();
+
+void initIn2();
+void triggerIn2AtRisingEdge();
+void triggerIn2AtFallingEdge();
+
+void initIn3();
+void triggerIn3AtRisingEdge();
+void triggerIn3AtFallingEdge();
+
+void initIn4();
+void triggerIn4AtRisingEdge();
+void triggerIn4AtFallingEdge();
 
 #endif /* HAL_H_ */
