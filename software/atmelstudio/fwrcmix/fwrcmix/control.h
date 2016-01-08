@@ -55,7 +55,7 @@ private:
 	controlFailsafeFunc _failsafeFunc;
 	controlMixingFunc _mixingFunc;
 
-	bool isFailsafeCondition();
+	bool isGood();
 	void toogleLed();
 	void turnLedOn();
 };

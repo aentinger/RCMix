@@ -26,7 +26,7 @@
  */
 bool ControlDemo::isGoodFunc()
 {
-	return RcIn::isGood(IN1) && RcIn::isGood(IN2) && RcIn::isGood(IN3) && RcIn::isGood(IN4);
+	return (RcIn::isGood(IN1) && RcIn::isGood(IN2) && RcIn::isGood(IN3) && RcIn::isGood(IN4));
 }
 
 /** 

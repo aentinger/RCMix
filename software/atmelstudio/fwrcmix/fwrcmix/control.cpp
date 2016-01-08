@@ -55,7 +55,7 @@ void Control::execute()
 			
 			/* State handling */
 			
-			if(!isFailsafeCondition())
+			if(isGood())
 			{
 				_state = MIXING;
 			}			
@@ -74,7 +74,7 @@ void Control::execute()
 			
 			/* State handling */
 			
-			if(isFailsafeCondition())
+			if(!isGood())
 			{
 				_state = FAILSAFE;
 			}
@@ -92,7 +92,7 @@ void Control::execute()
 /* PRIVATE FUNCTIONS	                                                */
 /************************************************************************/
 
-bool Control::isFailsafeCondition()
+bool Control::isGood()
 {
 	if(_isGoodFunc)
 	{
