@@ -25,8 +25,8 @@
  * \brief The Constructor is handed over function pointers which point to the 
  * concrete implementation of the desired mixing functionality.
  */ 
-Control::Control(controlIsGoodFunc isGoodFunc, controlFailsafeFunc failsafeFunc, controlMixingFunc mixingFunc)
-: _isGoodFunc(isGoodFunc), _failsafeFunc(failsafeFunc), _mixingFunc(mixingFunc)
+Control::Control(controlIsGoodFunc isGoodFunc, controlFailsafeFunc failsafeFunc, controlMixingFunc mixingFunc, controlOnTransitionToFailsafe transitionToFailsafeFunc, controlOnTransitionToMixing transitionToMixingFunc)
+: _state(FAILSAFE), _isGoodFunc(isGoodFunc), _failsafeFunc(failsafeFunc), _mixingFunc(mixingFunc), _transitionToFailsafeFunc(transitionToFailsafeFunc), _transitionToMixingFunc(transitionToMixingFunc) 
 {
 	
 }
@@ -58,6 +58,11 @@ void Control::execute()
 			if(isGood())
 			{
 				_state = MIXING;
+				
+				if(_transitionToMixingFunc != 0)
+				{
+					_transitionToMixingFunc();					
+				}
 			}			
 		}
 		break;
@@ -77,6 +82,11 @@ void Control::execute()
 			if(!isGood())
 			{
 				_state = FAILSAFE;
+				
+				if(_transitionToFailsafeFunc != 0)
+				{
+					_transitionToFailsafeFunc();
+				}
 			}
 		}
 		break;

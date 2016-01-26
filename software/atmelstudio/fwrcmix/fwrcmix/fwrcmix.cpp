@@ -23,9 +23,13 @@
 #include "control.h"
 
 #include "config.h"
-#ifdef CONFIG_USE_CONTROL_DEMO
+
+#if defined(CONFIG_USE_CONTROL_DEMO)
 #include "control_demo.h"
+#elif defined(CONFIG_USE_CONTROL_OMNIDRIVE_3_WHEELS)
+#include "control_omnidrive_3_wheels.h"
 #endif
+
 
 /************************************************************************/
 /* PROTOTYPES                                                           */
@@ -40,8 +44,10 @@ void init_application();
 int main(void)
 {
 	Control control(
-#ifdef CONFIG_USE_CONTROL_DEMO
-	ControlDemo::isGoodFunc, ControlDemo::failsafeFunc, ControlDemo::mixingFunc
+#if defined(CONFIG_USE_CONTROL_DEMO)
+	&ControlDemo::isGoodFunc, &ControlDemo::failsafeFunc, &ControlDemo::mixingFunc, &ControlDemo::transitionToFailsafeFunc, &ControlDemo::transitionToMixingFunc
+#elif defined(CONFIG_USE_CONTROL_OMNIDRIVE_3_WHEELS)
+	ControlOmnidrive3Wheels::isGoodFunc, ControlOmnidrive3Wheels::failsafeFunc, ControlOmnidrive3Wheels::mixingFunc, ControlOmnidrive3Wheels::transitionToFailsafeFunc, ControlOmnidrive3Wheels::transitionToMixingFunc
 #endif
 	);
 

@@ -6,6 +6,8 @@ control.cpp
 
 control_demo.cpp
 
+control_omnidrive_3_wheels.cpp
+
 fwrcmix.cpp
 
 hal.cpp

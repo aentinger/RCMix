@@ -17,6 +17,8 @@
 #include "rcin.h"
 #include "rcout.h"
 
+#ifdef CONFIG_USE_CONTROL_DEMO
+
 /************************************************************************/
 /* PUBLIC FUNCTIONS	                                                    */
 /************************************************************************/
@@ -34,10 +36,9 @@ bool ControlDemo::isGoodFunc()
  */
 void ControlDemo::failsafeFunc()
 {
-	RcOut::setRcOutState(OUT1, OUTx_OFF);
-	RcOut::setRcOutState(OUT2, OUTx_OFF);
-	RcOut::setRcOutState(OUT3, OUTx_OFF);
-	RcOut::setRcOutState(OUT4, OUTx_OFF);
+	/* Nothing to do here, outputs are turned off in the
+	 * transition to failsafe
+	 */
 }
 
 /** 
@@ -45,13 +46,32 @@ void ControlDemo::failsafeFunc()
  */
 void ControlDemo::mixingFunc()
 {
-	RcOut::setRcOutState(OUT1, OUTx_ON);
-	RcOut::setRcOutState(OUT2, OUTx_ON);
-	RcOut::setRcOutState(OUT3, OUTx_ON);
-	RcOut::setRcOutState(OUT4, OUTx_ON);
-			
 	RcOut::setPwmPulseDurationUs(OUT1, RcIn::getPulseDurationUs(IN1));
 	RcOut::setPwmPulseDurationUs(OUT2, RcIn::getPulseDurationUs(IN2));
 	RcOut::setPwmPulseDurationUs(OUT3, RcIn::getPulseDurationUs(IN3));
 	RcOut::setPwmPulseDurationUs(OUT4, RcIn::getPulseDurationUs(IN4));
 }
+
+/** 
+ * \brief this function implements the behaviour if a transition from mixing to failsafe is taking place
+ */
+void ControlDemo::transitionToFailsafeFunc()
+{
+	RcOut::setRcOutState(OUT1, OUTx_OFF);
+	RcOut::setRcOutState(OUT2, OUTx_OFF);
+	RcOut::setRcOutState(OUT3, OUTx_OFF);
+	RcOut::setRcOutState(OUT4, OUTx_OFF);
+}
+
+/** 
+ * \brief this function implements the behaviour if a transition from failsafe to mixing is taking place
+ */
+void ControlDemo::transitionToMixingFunc()
+{
+	RcOut::setRcOutState(OUT1, OUTx_ON);
+	RcOut::setRcOutState(OUT2, OUTx_ON);
+	RcOut::setRcOutState(OUT3, OUTx_ON);
+	RcOut::setRcOutState(OUT4, OUTx_ON);	
+}
+
+#endif

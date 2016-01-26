@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../control.cpp \
 ../control_demo.cpp \
+../control_omnidrive_3_wheels.cpp \
 ../fwrcmix.cpp \
 ../hal.cpp \
 ../led.cpp \
@@ -55,6 +56,7 @@ ASM_SRCS +=
 OBJS +=  \
 control.o \
 control_demo.o \
+control_omnidrive_3_wheels.o \
 fwrcmix.o \
 hal.o \
 led.o \
@@ -64,6 +66,7 @@ rcout.o
 OBJS_AS_ARGS +=  \
 control.o \
 control_demo.o \
+control_omnidrive_3_wheels.o \
 fwrcmix.o \
 hal.o \
 led.o \
@@ -73,6 +76,7 @@ rcout.o
 C_DEPS +=  \
 control.d \
 control_demo.d \
+control_omnidrive_3_wheels.d \
 fwrcmix.d \
 hal.d \
 led.d \
@@ -82,6 +86,7 @@ rcout.d
 C_DEPS_AS_ARGS +=  \
 control.d \
 control_demo.d \
+control_omnidrive_3_wheels.d \
 fwrcmix.d \
 hal.d \
 led.d \
@@ -102,6 +107,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

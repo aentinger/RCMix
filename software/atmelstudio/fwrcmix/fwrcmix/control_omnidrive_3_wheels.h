@@ -1,29 +1,30 @@
 /**
- * \file control_demo.h
+ * \file control_omnidrive_3_wheels.h
  * \author Alexander Entinger, MSc
  * \copyright LXRobotics GmbH
- * \brief This class demonstrates a simple mixer where the four inputs are 1:1 mixed to four outputs (OUT1 = IN1, OUT2 = IN2, ...) including how to implement a failsafe
+ * \brief This class is mixing three channels for controlling a robot with omnidirectional drive via a remote control.
  * \license 
  */
 
-#ifndef CONTROLDEMO_H_
-#define CONTROLDEMO_H_
+#ifndef OMNIDRIVE_3_WHEELS_H_
+#define OMNIDRIVE_3_WHEELS_H_
 
 /************************************************************************/
 /* INCLUDES                                                             */
 /************************************************************************/
 
+#include <stdint.h>
 #include <stdbool.h>
 
 #include "config.h"
 
-#ifdef CONFIG_USE_CONTROL_DEMO
+#ifdef CONFIG_USE_CONTROL_OMNIDRIVE_3_WHEELS
 
 /************************************************************************/
 /* PUBLIC PROTOTYPES                                                    */
 /************************************************************************/
 
-class ControlDemo
+class ControlOmnidrive3Wheels
 {
 
 public:
@@ -58,10 +59,38 @@ private:
 	/** 
 	 * \brief No public constructing
 	 */
-	ControlDemo() { }
+	ControlOmnidrive3Wheels() { }
+	
+	static uint16_t const DEADZONE_US = 50;
+		
+	/** 
+	 * \brief returns true if 1500 - deadzone_us <= pulse_duration_us <= 1500 + deadzone_us
+	 */
+	static bool isStickInCenterPosition(uint16_t const pulse_duration_us, uint16_t const deadzone_us);
+	
+	/** 
+	 * \brief this function controls the moving of the omnidirectional platform
+	 */
+	static void doMove(uint16_t const fwd_bwd, uint16_t const left_right);
 
+	/** 
+	 * \brief this function controls the rotation of the omnidirectional platform
+	 */	
+	static void doRotate(uint16_t const rotate);
+	
+	/** 
+	 * \brief absolutely do nothing - all outputs are at 1500 (neutral value)
+	 */	
+	static void doNothing();
+	
+	/** 
+	 * \brief control the three motors
+	 */
+	static void setMotorA(uint16_t const pulse_duration_us);
+	static void setMotorB(uint16_t const pulse_duration_us);
+	static void setMotorC(uint16_t const pulse_duration_us);
 };
 
 #endif
 
-#endif /* CONTROLDEMO_H_ */
+#endif /* OMNIDRIVE_3_WHEELS_H_ */

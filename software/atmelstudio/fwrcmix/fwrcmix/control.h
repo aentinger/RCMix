@@ -21,9 +21,11 @@
 /* PUBLIC TYPES                                                         */
 /************************************************************************/
 
-typedef bool(*controlIsGoodFunc)(void);
-typedef void(*controlFailsafeFunc)(void);
-typedef void(*controlMixingFunc)(void);
+typedef bool(*controlIsGoodFunc)(void);					/* This function is used to determine wether we are in failsafe or in mixing mode */
+typedef void(*controlFailsafeFunc)(void);				/* This function is executed upon occurence of an failsafe event */
+typedef void(*controlMixingFunc)(void);					/* This function is executed in normal mixing mode */
+typedef void(*controlOnTransitionToFailsafe)(void);		/* This function is called on the transition from mixing to failsafe mode */
+typedef void(*controlOnTransitionToMixing)(void);		/* This function is called on the transition from failsafe to mixing mode */
 
 /************************************************************************/
 /* PUBLIC PROTOTYPES                                                    */
@@ -38,7 +40,7 @@ public:
 	 * \brief The Constructor is handed over function pointers which point to the 
 	 * concrete implementation of the desired mixing functionality.
 	 */ 
-	Control(controlIsGoodFunc isGoodFunc, controlFailsafeFunc failsafeFunc, controlMixingFunc mixingFunc);
+	Control(controlIsGoodFunc isGoodFunc, controlFailsafeFunc failsafeFunc, controlMixingFunc mixingFunc, controlOnTransitionToFailsafe transitionToFailsafeFunc, controlOnTransitionToMixing transitionToMixingFunc);
 	
 	/** 
 	 * \brief This function is executed in the main loop. Here we call the 
@@ -54,6 +56,8 @@ private:
 	controlIsGoodFunc _isGoodFunc;
 	controlFailsafeFunc _failsafeFunc;
 	controlMixingFunc _mixingFunc;
+	controlOnTransitionToFailsafe _transitionToFailsafeFunc;
+	controlOnTransitionToMixing _transitionToMixingFunc;
 
 	bool isGood();
 	void toogleLed();

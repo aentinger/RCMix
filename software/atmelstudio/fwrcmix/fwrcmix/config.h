@@ -9,6 +9,7 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#define CONFIG_USE_CONTROL_DEMO
+//#define CONFIG_USE_CONTROL_DEMO
+#define CONFIG_USE_CONTROL_OMNIDRIVE_3_WHEELS
 
 #endif /* CONFIG_H_ */
