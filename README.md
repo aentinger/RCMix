@@ -1,5 +1,7 @@
 # rcmix
 
+The LXRobotics P20 RC Mixer is a device which can mix up to 4 standard RC PWM inputs (pulse period 20 ms, pulse duration 1-2 ms) to up to 6 standard RC PWM outputs applying any used definable control algorithm.
+
 ## Installation
 
 * Install the Arduino IDE
