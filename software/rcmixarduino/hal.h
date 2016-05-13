@@ -1,9 +1,25 @@
-/**
- * \file hal.h
- * \author Alexander Entinger, MSc
- * \copyright LXRobotics GmbH
- * \brief hardware abstraction layer
- * \license 
+/*
+ * MIT License
+ *
+ * Copyright (c) 2016 LXRobotics GmbH / Alexander Entinger, MSc
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 #ifndef HAL_H_
@@ -63,21 +79,21 @@
 
 /* IN1 = PD3 = INT3 */
 
-#define IN1_DDR				(DDRD)
-#define IN1_PORT			(PORTD)
-#define IN1_bm				(1<<3)
+#define IN1_DDR				      (DDRD)
+#define IN1_PORT			      (PORTD)
+#define IN1_bm				      (1<<3)
 #define EINT_IN1_rising_bm	((1<<ISC31) | (1<<ISC30))
 #define EINT_IN1_falling_bm	(1<<ISC31)
-#define EINT_IN1_clear_bm	(~EINT_IN1_rising_bm)
+#define EINT_IN1_clear_bm	  (~EINT_IN1_rising_bm)
 
 /* IN2 = PD2 = INT2 */
 
-#define IN2_DDR				(DDRD)
-#define IN2_PORT			(PORTD)
-#define IN2_bm				(1<<2)
+#define IN2_DDR				      (DDRD)
+#define IN2_PORT			      (PORTD)
+#define IN2_bm				      (1<<2)
 #define EINT_IN2_rising_bm	((1<<ISC21) | (1<<ISC20))
 #define EINT_IN2_falling_bm	(1<<ISC21)
-#define EINT_IN2_clear_bm	(~EINT_IN2_rising_bm)
+#define EINT_IN2_clear_bm	  (~EINT_IN2_rising_bm)
 
 /* IN3 = PD1 = INT1 */
 
@@ -90,12 +106,12 @@
 
 /* IN4 = PD0 = INT0 */
 
-#define IN4_DDR				(DDRD)
-#define IN4_PORT			(PORTD)
-#define IN4_bm				(1<<0)
+#define IN4_DDR				      (DDRD)
+#define IN4_PORT			      (PORTD)
+#define IN4_bm				      (1<<0)
 #define EINT_IN4_rising_bm	((1<<ISC01) | (1<<ISC00))
 #define EINT_IN4_falling_bm	(1<<ISC01)
-#define EINT_IN4_clear_bm	(~EINT_IN4_rising_bm)
+#define EINT_IN4_clear_bm	  (~EINT_IN4_rising_bm)
 
 /************************************************************************/
 /* PUBLIC PROTOTYPES                                                    */
@@ -104,7 +120,7 @@
 void initOut1();
 void setOut1();
 void clearOut1();
-	
+
 void initOut2();
 void setOut2();
 void clearOut2();
@@ -112,15 +128,15 @@ void clearOut2();
 void initOut3();
 void setOut3();
 void clearOut3();
-	
+
 void initOut4();
 void setOut4();
 void clearOut4();
-	
+
 void initOut5();
 void setOut5();
 void clearOut5();
-	
+
 void initOut6();
 void setOut6();
 void clearOut6();
@@ -128,7 +144,7 @@ void clearOut6();
 void initULed();
 void setULed();
 void clearULed();
-	
+
 void initIn1();
 void triggerIn1AtRisingEdge();
 void triggerIn1AtFallingEdge();
