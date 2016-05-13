@@ -9,7 +9,7 @@ sudo apt-get install arduino
 ```
 * Clone this repository
 
- ```
+```
 git clone https://github.com/lxrobotics/rcmix.git
 ```
 * Open project in Arduino IDE by left clicking on `rcmixarduino.ino`
