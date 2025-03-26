@@ -1,10 +1,14 @@
-# rcmix
+<a href="https://lxrobotics.com/"><img align="right" src="https://assets.lxrobotics.com/logo-old/lxrobotics.png" width="15%"></a>
+💾 RC Mixer
+===========
 
 The LXRobotics P20 RC Mixer is a device which can mix up to 4 standard RC PWM inputs (pulse period 20 ms, pulse duration 1-2 ms) to up to 6 standard RC PWM outputs applying any used definable control algorithm.
 
-![LXRobotics P20 RCMix](https://www.lxrobotics.com/wp-content/uploads/mz_product_page_rcmix_side_small.jpg)
+# 📸 Image
 
-## Installation
+![LXRobotics P12 Relay Shield](images/rcmix-side-small.jpg)
+
+## 💻 Installation
 
 * Install the Arduino IDE
 
@@ -14,10 +18,10 @@ sudo apt-get install arduino
 * Clone this repository
 
 ```
-git clone https://github.com/lxrobotics/rcmix.git
+git clone https://github.com/aentinger/rcmix
 ```
 
-## Building
+## 💻 Building
 
 * Open project in Arduino IDE by left clicking on `rcmixarduino.ino`
 
@@ -25,7 +29,7 @@ git clone https://github.com/lxrobotics/rcmix.git
 
 * Compile with `Ctrl+R`
 
-## Upload
+## 💻 Upload
 
 * Connect an **AVR ISP mkII** with the rcmix hardware
  
